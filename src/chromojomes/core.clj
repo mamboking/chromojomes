@@ -1,9 +1,6 @@
 (ns chromojomes.core
   (:require [clojure.zip :as zip])
-  (:use chromojomes.discovery
-        chromojomes.mutations))
-
-(def function-seq (seq (available-fns 'clojure.core)))
+  (:use chromojomes.mutations))
 
 (defn get-branch [loc]
   (if (zip/branch? loc)
@@ -16,11 +13,6 @@
     (if (nil? (zip/right point))
       count
       (recur (zip/right point) (inc count)))))
-
-(defn mutate-arg [arg-loc]
-  (zip/edit
-   arg-loc
-   (fn [x] (apply-random-fn [x (gen-rand-arg)] function-seq))))
 
 (defn random-arg [loc]
   (loop [point (zip/right (zip/next (get-branch loc)))
